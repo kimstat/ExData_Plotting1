@@ -6,20 +6,15 @@
 rm(list = ls())
 for(i in 1:5) gc()
 
-# SET WORKING DIRECTORY
-setwd("c:/School/Coursera/ExploratoryDataAnalysis/")
+options(stringsAsFactors=FALSE)
 
 ######## DATA PREP ########
 
-# originally downloaded from URL
-# fileURL <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
-# data_location <- "C:/School/Coursera/ExploratoryDataAnalysis/"
-# download.file(url = fileURL,destfile = data_location)
-# now just load from local
-zipfn <- "C:/School/Coursera/ExploratoryDataAnalysis/exdata-data-household_power_consumption.zip"
+fileURL <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
+if(!file.exists("./data")){dir.create("./data")}
+zipfn <- "./data/exdata%2Fdata%2Fhousehold_power_consumption.zip"
+download.file(url = fileURL,destfile = zipfn)
 
-# identify relavent files
-options(stringsAsFactors=FALSE)
 # look at which files are in Zip
 files <- unzip(zipfile = zipfn,list=T)$Name
 # bring in the 1st row which contains the column names

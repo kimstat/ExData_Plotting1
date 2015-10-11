@@ -6,20 +6,16 @@
 rm(list = ls())
 for(i in 1:5) gc()
 
-# SET WORKING DIRECTORY
-setwd("c:/School/Coursera/ExploratoryDataAnalysis/")
+options(stringsAsFactors=FALSE)
 
 ######## DATA PREP ########
 
-# originally downloaded from URL
-# fileURL <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
-# data_location <- "C:/School/Coursera/ExploratoryDataAnalysis/"
-# download.file(url = fileURL,destfile = data_location)
-# now just load from local
-zipfn <- "C:/School/Coursera/ExploratoryDataAnalysis/exdata-data-household_power_consumption.zip"
+fileURL <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
+if(!file.exists("./data")){dir.create("./data")}
+zipfn <- "./data/exdata%2Fdata%2Fhousehold_power_consumption.zip"
+download.file(url = fileURL,destfile = zipfn)
 
-# identify relavent files
-options(stringsAsFactors=FALSE)
+
 # look at which files are in Zip
 files <- unzip(zipfile = zipfn,list=T)$Name
 # bring in the 1st row which contains the column names
@@ -46,4 +42,34 @@ png("plot1.png", width = 480, height = 480)
 hist(data$Global_active_power,col='red',xlab="Global Active Power (kilowatts)",main="Global Active Power")
 dev.off()
 
+png("plot2.png", width = 480, height = 480)
+plot(data$datetime,data$Global_active_power,ylab="Global Active Power (kilowatts)",type = 'l',xlab="datetime")
+dev.off()
+
+png("plot3.png", width = 480, height = 480)
+plot(data$datetime,data$Sub_metering_1,ylab="Energy sub metering",type = 'l',xlab="")
+lines(data$datetime,data$Sub_metering_2,col="red")
+lines(data$datetime,data$Sub_metering_3,col="blue")
+legend("topright",
+       c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),
+       lwd=c(2.5,2.5,2.5),
+       col=c("black","blue","red"))
+
+dev.off()
+
+
+png(file='plot4.png')
+par(mfrow= c(2, 2))
+plot(data$datetime,data$Global_active_power,ylab="Global Active Power",type = 'l',xlab="")
+plot(data$datetime,data$Voltage,ylab="Voltage",type = 'l',xlab="datetime")
+plot(data$datetime,data$Sub_metering_1,ylab="Energy sub metering",type = 'l',xlab="")
+lines(data$datetime,data$Sub_metering_2,col="red")
+lines(data$datetime,data$Sub_metering_3,col="blue")
+legend("topright",
+       c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),
+       lwd=c(2.5,2.5,2.5),
+       col=c("black","blue","red"),
+       bty="n")
+plot(data$datetime,data$Global_reactive_power,ylab="Global_reactive_power",type = 'l',xlab="datetime")
+dev.off()
 
